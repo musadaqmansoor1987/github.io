@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Chrome UI (hover devices only): credit badge with idle-fade.
+    // Deferred until body exists since the script may run in <head>.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} by ClickUp Brain';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initChromeUI);
+    } else {
+        initChromeUI();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Musadaq Mansoor | Game Development & Computer Science Faculty</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: oklch(45% 0.14 25);
+  --primary-light: oklch(55% 0.12 25);
+  --primary-lighter: oklch(92% 0.03 25);
+  --primary-dark: oklch(35% 0.14 25);
+  --neutral-50: oklch(97% 0.005 25);
+  --neutral-100: oklch(94% 0.008 25);
+  --neutral-200: oklch(88% 0.01 25);
+  --neutral-300: oklch(78% 0.01 25);
+  --neutral-400: oklch(62% 0.01 25);
+  --neutral-600: oklch(42% 0.012 25);
+  --neutral-700: oklch(32% 0.012 25);
+  --neutral-800: oklch(22% 0.012 25);
+  --neutral-900: oklch(15% 0.012 25);
+  --surface: oklch(99% 0.003 25);
+  --accent-game: oklch(55% 0.18 280);
+  --accent-game-light: oklch(92% 0.04 280);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--neutral-800);
+  background: var(--surface);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  text-wrap: balance;
+  color: var(--neutral-900);
+}
+
+p { text-wrap: pretty; }
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 150ms var(--ease-out-expo);
+}
+a:hover { color: var(--primary-light); }
+
+/* Navigation */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: oklch(99% 0.003 25 / 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--neutral-200);
+  padding: var(--space-md) var(--space-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+nav .logo {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.25rem;
+  color: var(--neutral-900);
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: var(--space-lg);
+}
+
+nav ul li a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--neutral-600);
+  letter-spacing: 0.02em;
+  transition: color 150ms var(--ease-out-expo);
+}
+nav ul li a:hover { color: var(--primary); }
+
+/* Hero */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: var(--space-3xl) var(--space-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, oklch(90% 0.06 25 / 0.4), transparent 70%);
+  pointer-events: none;
+}
+
+.hero-content {
+  max-width: 720px;
+  position: relative;
+}
+
+.hero-eyebrow {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: var(--space-md);
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.05;
+  margin-bottom: var(--space-lg);
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--neutral-600);
+  max-width: 55ch;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-stats {
+  display: flex;
+  gap: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.hero-stat .number {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.5rem;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.hero-stat .label {
+  font-size: 0.8rem;
+  color: var(--neutral-400);
+  margin-top: var(--space-xs);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+/* Sections */
+section {
+  padding: var(--space-3xl) var(--space-xl);
+}
+
+section:nth-child(even) {
+  background: var(--neutral-50);
+}
+
+.section-header {
+  margin-bottom: var(--space-xl);
+}
+
+.section-header h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: var(--space-sm);
+}
+
+.section-header .subtitle {
+  color: var(--neutral-400);
+  font-size: 1rem;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Teaching Highlight */
+.teaching-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.course-group h3 {
+  font-size: 1.3rem;
+  margin-bottom: var(--space-md);
+  color: var(--primary-dark);
+}
+
+.course-group ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.course-group ul li {
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 100px;
+  background: var(--neutral-100);
+  color: var(--neutral-700);
+  font-weight: 450;
+  transition: background 200ms var(--ease-out-expo), color 200ms var(--ease-out-expo);
+}
+
+.course-group ul li.highlight {
+  background: var(--primary);
+  color: var(--neutral-50);
+  font-weight: 500;
+}
+
+/* Experience Timeline */
+.timeline {
+  position: relative;
+  padding-left: var(--space-xl);
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--neutral-200);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: var(--space-xl);
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--space-xl) - 5px);
+  top: 8px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary-lighter);
+  border: 3px solid var(--primary);
+}
+
+.timeline-item.featured::before {
+  width: 14px;
+  height: 14px;
+  left: calc(-1 * var(--space-xl) - 6px);
+  background: var(--primary);
+  box-shadow: 0 0 0 4px oklch(45% 0.14 25 / 0.15);
+}
+
+.timeline-date {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+
+.timeline-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+}
+
+.timeline-org {
+  font-size: 0.9rem;
+  color: var(--neutral-400);
+  margin-bottom: var(--space-sm);
+}
+
+.timeline-desc {
+  font-size: 0.9rem;
+  color: var(--neutral-600);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+/* Publications */
+.pub-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.pub-item {
+  padding: var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--neutral-200);
+  border-radius: 12px;
+  transition: border-color 200ms var(--ease-out-expo), transform 200ms var(--ease-out-expo);
+}
+
+.pub-item:hover {
+  border-color: var(--neutral-300);
+  transform: translateY(-2px);
+}
+
+.pub-item .year {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.pub-item .title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--neutral-800);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.pub-item .venue {
+  font-size: 0.82rem;
+  color: var(--neutral-400);
+  font-style: italic;
+}
+
+/* FYP Section */
+.fyp-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+.fyp-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-lg);
+  border-radius: 12px;
+  border: 1px solid var(--neutral-200);
+  background: var(--surface);
+  transition: border-color 200ms var(--ease-out-expo), transform 200ms var(--ease-out-expo);
+}
+
+.fyp-item:hover {
+  border-color: var(--neutral-300);
+  transform: translateY(-1px);
+}
+
+.fyp-item.featured-fyp {
+  background: var(--accent-game-light);
+  border: 2px solid var(--accent-game);
+  grid-column: 1 / -1;
+  padding: var(--space-xl) var(--space-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.fyp-item.featured-fyp::after {
+  content: 'GAME DEV';
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent-game);
+  background: oklch(98% 0.02 280);
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+
+.fyp-number {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2rem;
+  color: var(--neutral-300);
+  min-width: 40px;
+  text-align: center;
+}
+
+.fyp-item.featured-fyp .fyp-number {
+  color: var(--accent-game);
+  font-size: 2.5rem;
+}
+
+.fyp-details h3 {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+  color: var(--neutral-800);
+}
+
+.fyp-item.featured-fyp .fyp-details h3 {
+  font-size: 1.3rem;
+  color: var(--neutral-900);
+}
+
+.fyp-details .students {
+  font-size: 0.82rem;
+  color: var(--neutral-400);
+}
+
+.fyp-item.featured-fyp .fyp-details .students {
+  color: var(--neutral-600);
+}
+
+/* Trainings */
+.training-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.training-item {
+  padding: var(--space-lg);
+  border-radius: 12px;
+  border: 1px solid var(--neutral-200);
+  background: var(--surface);
+  position: relative;
+  transition: border-color 200ms var(--ease-out-expo), transform 200ms var(--ease-out-expo);
+}
+
+.training-item:hover {
+  border-color: var(--neutral-300);
+  transform: translateY(-2px);
+}
+
+.training-item .role-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+  margin-bottom: var(--space-md);
+}
+
+.training-item .role-badge.trainer {
+  background: var(--primary-lighter);
+  color: var(--primary);
+}
+
+.training-item .role-badge.trainee {
+  background: var(--accent-game-light);
+  color: var(--accent-game);
+}
+
+.training-item .training-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  color: var(--neutral-900);
+}
+
+.training-item .training-org {
+  font-size: 0.85rem;
+  color: var(--neutral-600);
+  margin-bottom: 4px;
+}
+
+.training-item .training-date {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Education */
+.edu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-lg);
+}
+
+.edu-item {
+  padding: var(--space-lg);
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--neutral-200);
+}
+
+.edu-item .degree {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.3rem;
+  margin-bottom: 4px;
+}
+
+.edu-item .institution {
+  font-size: 0.9rem;
+  color: var(--neutral-600);
+  margin-bottom: var(--space-sm);
+}
+
+.edu-item .year-ed {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Skills */
+.skills-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-xl);
+}
+
+.skill-category h3 {
+  font-size: 1.1rem;
+  margin-bottom: var(--space-md);
+  color: var(--neutral-700);
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.skill-tags span {
+  font-size: 0.82rem;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: var(--neutral-100);
+  color: var(--neutral-700);
+  font-weight: 450;
+}
+
+.skill-tags span.primary {
+  background: var(--primary);
+  color: var(--neutral-50);
+}
+
+/* Contact */
+.contact-section {
+  text-align: center;
+  padding: var(--space-3xl) var(--space-xl);
+}
+
+.contact-section h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: var(--space-md);
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  margin-top: var(--space-lg);
+}
+
+.contact-links a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 12px 28px;
+  border-radius: 8px;
+  border: 1.5px solid var(--neutral-200);
+  color: var(--neutral-700);
+  transition: all 200ms var(--ease-out-expo);
+}
+
+.contact-links a:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-lighter);
+}
+
+.contact-links a.primary-btn {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--neutral-50);
+}
+
+.contact-links a.primary-btn:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-light);
+  color: var(--neutral-50);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: var(--space-xl);
+  font-size: 0.8rem;
+  color: var(--neutral-400);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav ul { display: none; }
+  .hero { padding: var(--space-2xl) var(--space-lg); min-height: auto; padding-top: 120px; }
+  section { padding: var(--space-2xl) var(--space-lg); }
+  .hero-stats { gap: var(--space-lg); }
+  .timeline { padding-left: var(--space-lg); }
+  .timeline-item::before { left: calc(-1 * var(--space-lg) - 5px); }
+  .timeline-item.featured::before { left: calc(-1 * var(--space-lg) - 6px); }
+  .fyp-item { grid-template-columns: auto 1fr; }
+  .fyp-item > *:last-child:not(.fyp-number):not(.fyp-details) { display: none; }
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-content > * {
+  animation: fadeUp 600ms var(--ease-out-expo) both;
+}
+.hero-content > *:nth-child(1) { animation-delay: 100ms; }
+.hero-content > *:nth-child(2) { animation-delay: 200ms; }
+.hero-content > *:nth-child(3) { animation-delay: 300ms; }
+.hero-content > *:nth-child(4) { animation-delay: 400ms; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">M. Mansoor</div>
+  <ul>
+    <li><a href="#teaching">Teaching</a></li>
+    <li><a href="#fyp">FYP Supervision</a></li>
+    <li><a href="#trainings">Trainings</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Game Development &amp; Computer Science Faculty</p>
+    <h1>Musadaq Mansoor</h1>
+    <p class="hero-subtitle">Assistant Professor blending a decade of academic teaching with hands-on game development and software engineering experience. Specializing in interactive media, AI, and applied computer science.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="number">10+</div>
+        <div class="label">Years in Academia</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">11</div>
+        <div class="label">Publications</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">86</div>
+        <div class="label">Citations</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">5</div>
+        <div class="label">H-index</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="teaching">
+  <div class="container">
+    <div class="section-header">
+      <h2>Teaching Portfolio</h2>
+      <p class="subtitle">Undergraduate and graduate courses across four institutions</p>
+    </div>
+    <div class="teaching-grid">
+      <div class="course-group">
+        <h3>Game Dev &amp; Interactive Media</h3>
+        <ul>
+          <li class="highlight">Game Development (HTML5)</li>
+          <li class="highlight">UI/UX Design</li>
+          <li class="highlight">Graphic Designing</li>
+          <li>Full Stack Development</li>
+          <li>Web Engineering</li>
+          <li>Mobile App Development</li>
+        </ul>
+      </div>
+      <div class="course-group">
+        <h3>Software Engineering</h3>
+        <ul>
+          <li>Software Engineering</li>
+          <li>Software Testing Tools &amp; Techniques</li>
+          <li>Software Project Management</li>
+          <li>Software Requirement Engineering</li>
+          <li>Object Oriented Programming</li>
+          <li>Database Systems</li>
+        </ul>
+      </div>
+      <div class="course-group">
+        <h3>AI &amp; Data Science</h3>
+        <ul>
+          <li>Natural Language Processing</li>
+          <li>Advance Big Data Analytics</li>
+          <li>Advance Reinforcement Learning</li>
+          <li>Data Science</li>
+          <li>Bio-informatics</li>
+          <li>Research Methodology</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="fyp">
+  <div class="container">
+    <div class="section-header">
+      <h2>FYP Supervision</h2>
+      <p class="subtitle">Guiding the next generation of developers and researchers</p>
+    </div>
+    <div class="fyp-grid">
+      <div class="fyp-item featured-fyp">
+        <div class="fyp-number">1</div>
+        <div class="fyp-details">
+          <h3>NeuroPlay: AI-Driven EMG Gaming for Therapy</h3>
+          <p class="students">Waleed Khan, M. Azeem Khan, Haris Faisal</p>
+        </div>
+      </div>
+      <div class="fyp-item">
+        <div class="fyp-number">2</div>
+        <div class="fyp-details">
+          <h3>FocusTrack: AI-Powered Focus &amp; Mental Wellness Companion</h3>
+          <p class="students">Waleeja Atif, Zara Khan</p>
+        </div>
+      </div>
+      <div class="fyp-item">
+        <div class="fyp-number">3</div>
+        <div class="fyp-details">
+          <h3>DeepFake Detector</h3>
+          <p class="students">Ghaza Pervaiz, Amina Latif, Alishba Bibi</p>
+        </div>
+      </div>
+      <div class="fyp-item">
+        <div class="fyp-number">4</div>
+        <div class="fyp-details">
+          <h3>Agile Suite GitHub Manager</h3>
+          <p class="students">Umar Ali, Umar Siddique, Talha Ishaque</p>
+        </div>
+      </div>
+      <div class="fyp-item">
+        <div class="fyp-number">5</div>
+        <div class="fyp-details">
+          <h3>AI-Powered CKD Detection System</h3>
+          <p class="students">Muzammil Irshad, Husnain Safdar, Abdul Moiz Meer</p>
+        </div>
+      </div>
+      <div class="fyp-item">
+        <div class="fyp-number">6</div>
+        <div class="fyp-details">
+          <h3>SmartExaminer: Intelligent Online Quiz and Exam System</h3>
+          <p class="students">Kashan Sardar, Badar Ul Islam, Ali Hyder</p>
+        </div>
+      </div>
+      <div class="fyp-item">
+        <div class="fyp-number">7</div>
+        <div class="fyp-details">
+          <h3>Spacify: A Dedicated Smart Rental System</h3>
+          <p class="students">Anas Muntazir, Adeel Bin Asghar</p>
+        </div>
+      </div>
+      <div class="fyp-item">
+        <div class="fyp-number">8</div>
+        <div class="fyp-details">
+          <h3>Dev Skill Tracker</h3>
+          <p class="students">Muhammad Hannan Hafeez, Muhammad Mubashir, Abdul Rafay</p>
+        </div>
+      </div>
+      <div class="fyp-item">
+        <div class="fyp-number">9</div>
+        <div class="fyp-details">
+          <h3>Intelligent Anomaly Detection in IoT Network Traffic</h3>
+          <p class="students">Anees Ahmad</p>
+        </div>
+      </div>
+      <div class="fyp-item">
+        <div class="fyp-number">10</div>
+        <div class="fyp-details">
+          <h3>TransVision: A Smart Eyeglass System for Real-Time Language Translation</h3>
+          <p class="students">Talal Riaz Khan, Abdullah, Safiullah Naeem</p>
+        </div>
+      </div>
+      <div class="fyp-item">
+        <div class="fyp-number">11</div>
+        <div class="fyp-details">
+          <h3>AI-Powered Study Group Matcher</h3>
+          <p class="students">Daniyal Gul, Qasim Tahir, Muhammad Husnain</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trainings">
+  <div class="container">
+    <div class="section-header">
+      <h2>Trainings &amp; Certifications</h2>
+      <p class="subtitle">Delivering and receiving specialized game development training</p>
+    </div>
+    <div class="training-grid">
+      <div class="training-item">
+        <span class="role-badge trainer">Trainer</span>
+        <div class="training-title">Game Development Training Program for School Children</div>
+        <div class="training-org">Prosensia, Inc</div>
+        <div class="training-date">12 - 16 January 2026</div>
+      </div>
+      <div class="training-item">
+        <span class="role-badge trainer">Trainer</span>
+        <div class="training-title">Game Development Final Year Projects</div>
+        <div class="training-org">UET Mardan</div>
+        <div class="training-date">15 - 16 April 2026</div>
+      </div>
+      <div class="training-item">
+        <span class="role-badge trainee">Trainee</span>
+        <div class="training-title">Advance Game Development</div>
+        <div class="training-org">Digital Karvan</div>
+        <div class="training-date">31 Jan - 1 Feb 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="container">
+    <div class="section-header">
+      <h2>Professional Experience</h2>
+      <p class="subtitle">Academic leadership and industry game development</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">Oct 2024 - Present</div>
+        <div class="timeline-title">Assistant Professor (Computer Science)</div>
+        <div class="timeline-org">Pak-Austria Fachhochschule Institute of Applied Sciences and Technology</div>
+        <div class="timeline-desc">Teaching undergraduate and graduate courses. Supervising research students in applied computing.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Dec 2023 - Sep 2024</div>
+        <div class="timeline-title">Assistant Professor (Computer Science)</div>
+        <div class="timeline-org">Ghulam Ishaq Khan Institute of Engineering Sciences and Technology</div>
+        <div class="timeline-desc">Teaching CS and AI courses. Supervising student research in machine learning and NLP.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Sep 2022 - Dec 2023</div>
+        <div class="timeline-title">Assistant Professor / Program Coordinator (Software Engineering)</div>
+        <div class="timeline-org">National University of Computer and Emerging Sciences (FAST-NUCES)</div>
+        <div class="timeline-desc">Program coordination for Software Engineering department. Teaching, supervising BS/MS research, co-supervising PhD students.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Feb 2018 - Jan 2022</div>
+        <div class="timeline-title">Lecturer / Faculty Head GDSC</div>
+        <div class="timeline-org">Institute of Management Sciences, Peshawar</div>
+        <div class="timeline-desc">Led Google Developer Student Club. Taught across CS, Data Science, and Software Engineering departments.</div>
+      </div>
+      <div class="timeline-item featured">
+        <div class="timeline-date">Sep 2015 - Jun 2016</div>
+        <div class="timeline-title">Software Engineer (Game Development)</div>
+        <div class="timeline-org">FakeCrow, Los Angeles, USA</div>
+        <div class="timeline-desc">Designed and developed web applications and games. Worked with PHP, HTML5, jQuery, WordPress, and game development tooling on LAMP/WAMP stacks.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Oct 2011 - Sep 2015</div>
+        <div class="timeline-title">Software Engineer</div>
+        <div class="timeline-org">CCC (Oman), PersonForce, Server4Sale</div>
+        <div class="timeline-desc">Full-stack web development, HR applications, job portals, and large-scale project delivery across multiple organizations.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="research">
+  <div class="container">
+    <div class="section-header">
+      <h2>Research &amp; Publications</h2>
+      <p class="subtitle">H-index: 5 &middot; 86 Citations &middot; Focus: Generative AI, Deep Learning, NLP</p>
+    </div>
+    <div class="pub-list">
+      <div class="pub-item">
+        <div class="year">2025</div>
+        <div class="title">Optimization study of intelligent accounting manager system modules in adaptive behavioral pattern learning and simulation</div>
+        <div class="venue">PeerJ Computer Science</div>
+      </div>
+      <div class="pub-item">
+        <div class="year">2025</div>
+        <div class="title">Optimization Model for Enterprise Financial Management Utilizing Genetic Algorithms and Fuzzy Logic</div>
+        <div class="venue">Journal Publication</div>
+      </div>
+      <div class="pub-item">
+        <div class="year">2024</div>
+        <div class="title">Overcoming Linguistic Barriers: Developing Advanced Urdu Text-to-Speech Systems</div>
+        <div class="venue">19th International Conference on Emerging Technologies (ICET)</div>
+      </div>
+      <div class="pub-item">
+        <div class="year">2024</div>
+        <div class="title">Transforming Legal Workflows: A Deep Dive into NLP Solutions for Legal Challenges</div>
+        <div class="venue">19th International Conference on Emerging Technologies (ICET)</div>
+      </div>
+      <div class="pub-item">
+        <div class="year">2024</div>
+        <div class="title">Extractive Summarization of Urdu Language using Deep Learning Techniques on a Custom Dataset</div>
+        <div class="venue">19th International Conference on Emerging Technologies (ICET)</div>
+      </div>
+      <div class="pub-item">
+        <div class="year">2022</div>
+        <div class="title">Gene Ontology Capsule GAN: an improved architecture for protein function prediction</div>
+        <div class="venue">PeerJ Computer Science</div>
+      </div>
+      <div class="pub-item">
+        <div class="year">2022</div>
+        <div class="title">Gene Ontology GAN (GOGAN): a novel architecture for protein function prediction</div>
+        <div class="venue">Soft Computing (Springer)</div>
+      </div>
+      <div class="pub-item">
+        <div class="year">2021</div>
+        <div class="title">CapPlant: a capsule network based framework for plant disease classification</div>
+        <div class="venue">PeerJ Computer Science</div>
+      </div>
+      <div class="pub-item">
+        <div class="year">2021</div>
+        <div class="title">IoT Based Smart Gloves for Women Safety</div>
+        <div class="venue">International Conference on Innovative Computing (ICIC)</div>
+      </div>
+      <div class="pub-item">
+        <div class="year">2020</div>
+        <div class="title">IoT Based Time Triggered SPE Smart Switch for AC Appliances Control</div>
+        <div class="venue">International Conference on Innovations in Bio-Inspired Computing and Applications (Springer)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="container">
+    <div class="section-header">
+      <h2>Education</h2>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-item">
+        <div class="degree">Ph.D. Computer Science</div>
+        <div class="institution">FAST-NUCES, Peshawar</div>
+        <div class="year-ed">Completed 2022</div>
+        <p style="font-size: 0.85rem; color: var(--neutral-600); margin-top: 8px;">Thesis: Generative Adversarial Learning from Protein Sequence Data</p>
+      </div>
+      <div class="edu-item">
+        <div class="degree">MS Computer Science</div>
+        <div class="institution">NUST (SEECS), Islamabad</div>
+        <div class="year-ed">Completed 2016</div>
+      </div>
+      <div class="edu-item">
+        <div class="degree">MSc Computer Science</div>
+        <div class="institution">University of Peshawar</div>
+        <div class="year-ed">Completed 2010</div>
+      </div>
+      <div class="edu-item">
+        <div class="degree">BSc Computer Science</div>
+        <div class="institution">University of Peshawar</div>
+        <div class="year-ed">Completed 2007</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="container">
+    <div class="section-header">
+      <h2>Technical Toolkit</h2>
+    </div>
+    <div class="skills-section">
+      <div class="skill-category">
+        <h3>Game &amp; Interactive Development</h3>
+        <div class="skill-tags">
+          <span class="primary">Unity3D</span>
+          <span class="primary">HTML5 Canvas</span>
+          <span class="primary">C#</span>
+          <span>JavaScript</span>
+          <span>CSS Animations</span>
+          <span>Figma</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <h3>Web &amp; Mobile</h3>
+        <div class="skill-tags">
+          <span>PHP</span>
+          <span>Python</span>
+          <span>jQuery</span>
+          <span>Bootstrap</span>
+          <span>MongoDB</span>
+          <span>MySQL</span>
+          <span>Android Studio</span>
+          <span>WordPress</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <h3>AI &amp; Data Science</h3>
+        <div class="skill-tags">
+          <span>PyTorch</span>
+          <span>scikit-learn</span>
+          <span>Pandas</span>
+          <span>Jupyter</span>
+          <span>Google Colab</span>
+          <span>Hadoop</span>
+          <span>Spark</span>
+          <span>Tableau</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <h3>Tools &amp; Platforms</h3>
+        <div class="skill-tags">
+          <span>GitHub</span>
+          <span>VS Code</span>
+          <span>Selenium</span>
+          <span>Postman</span>
+          <span>MS Project</span>
+          <span>Trello</span>
+          <span>Overleaf</span>
+          <span>Moodle</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact-section">
+  <div class="container">
+    <h2>Let's Connect</h2>
+    <p style="color: var(--neutral-400); max-width: 50ch; margin: 0 auto;">Open to faculty positions in Game Development, Computer Science, and Software Engineering.</p>
+    <div class="contact-links">
+      <a href="mailto:musadaqm@yahoo.com" class="primary-btn">musadaqm@yahoo.com</a>
+      <a href="https://www.linkedin.com/in/musadaq-mansoor-273aa242/">LinkedIn</a>
+      <a href="https://scholar.google.com/citations?user=rcWsTzIAAAAJ&hl=en&oi=ao">Google Scholar</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Musadaq Mansoor. Built for academic excellence.</p>
+</footer>
+
+</body>
+</html>
